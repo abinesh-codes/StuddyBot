@@ -1,4 +1,4 @@
-// === Theme toggle with localStorage ===
+// Theme toggle with localStorage 
 const themeToggle = document.getElementById("themeToggle");
 const currentTheme = localStorage.getItem("studdybot-theme");
 
@@ -14,7 +14,7 @@ themeToggle.addEventListener("click", () => {
   themeToggle.textContent = theme === "light" ? "🌞" : "🌙";
 });
 
-// === Active nav highlight ===
+// Active nav highlight 
 const navLinks = document.querySelectorAll("nav ul li a");
 navLinks.forEach(link => {
   if (link.href === window.location.href) {
@@ -103,6 +103,7 @@ function removeLoading() {
   if (loading) loading.remove();
 }
 
+
 // scroll.js
 document.addEventListener("DOMContentLoaded", () => {
   const animatedEls = document.querySelectorAll('.animate');
@@ -124,7 +125,3 @@ document.addEventListener("DOMContentLoaded", () => {
 document.getElementById("startChatBtn").addEventListener("click", () => {
   window.location.href = "chat.html";
 });
-
-
-
-

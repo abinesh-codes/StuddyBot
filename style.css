@@ -1,3 +1,4 @@
+/* RESET + BASE */
 * {
   margin: 0;
   padding: 0;
@@ -199,7 +200,7 @@ ul li a:hover::after {
   color: #ccc;
 }
 body.light-mode .hero-content p {
-  color: #000; 
+  color: #000; /* black in light mode */
 }
 
 .cta {
@@ -230,6 +231,7 @@ section {
   color: inherit;
 }
 
+
 /* FEATURES */
 .features {
   padding: 2rem 3rem;
@@ -255,11 +257,12 @@ section {
 }
 /* Light Mode Card Style */
 body.light-mode .card {
-  background: rgba(0, 0, 0, 0.05); 
-  color: #000; 
+  background: rgba(0, 0, 0, 0.05); /* subtle dark glass effect */
+  color: #000; /* black text */
+}
 
 body.light-mode .card:hover {
-  background-color: rgba(0, 123, 255, 0.1); 
+  background-color: rgba(0, 123, 255, 0.1); /* bluish glow */
   box-shadow: 0 4px 20px rgba(0, 123, 255, 0.2);
 }
 
@@ -418,7 +421,7 @@ body.light-mode .chat-message.ai {
 @media (max-width: 480px) {
   .navbar {
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; /* ✅ Prevent breaking into multiple rows */
     justify-content: space-between;
     align-items: center;
     padding: 0.6rem 1rem;
@@ -435,15 +438,15 @@ body.light-mode .chat-message.ai {
   }
 
   .navbar-left {
-    justify-content: flex-start;  
+    justify-content: flex-start;  /* 🔹 Logo on left */
   }
 
   .navbar-center {
-    justify-content: center;      
+    justify-content: center;      /* 🔹 Nav in center */
   }
 
   .navbar-right {
-    justify-content: flex-end;  
+    justify-content: flex-end;    /* 🔹 Toggle on right */
   }
 
   .navbar-center ul {
@@ -457,7 +460,8 @@ body.light-mode .chat-message.ai {
 
   .navbar-center ul li a {
     font-size: 0.85rem;
-    white-space: nowrap; 
+    white-space: nowrap; /* 🚫 Prevents breaking lines */
+  }
 
   #themeToggle {
     font-size: 1.2rem;
@@ -519,17 +523,17 @@ body.light-mode .chat-message.ai {
     border: none;
   }
 
-/* LIGHT MODE STYLING  */
+/* === LIGHT MODE STYLING === */
 body.light-mode .navbar ul li a {
-  color: #000; 
+  color: #000; /* Set text color to black in light mode */
 }
 
-/* DARK MODE STYLING  */
+/* === DARK MODE STYLING (OPTIONAL) === */
 body.dark-mode .navbar ul li a {
   color: #fff;
 }
 
-  /* Rest of your 480px styles */
+  /* --- Rest of your 480px styles --- */
   .hero {
     padding: 2.5rem 1rem;
     flex-direction: column;
@@ -605,6 +609,11 @@ body.dark-mode .navbar ul li a {
   }
 }
 }
+
+
+
+
+
 
 /* RESET CHAT STYLES IN LIGHT MODE */
 body.light-mode .chat-box,
