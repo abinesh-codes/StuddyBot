@@ -22,57 +22,86 @@ navLinks.forEach(link => {
   }
 });
 
-// === Gemini Chat Integration ===
-const API_KEY = "AIzaSyBYI3fYEsnj5l7gj1wdfRTq7vk60HXgZeI"; // <-- Replace with your actual key
+// Gemini Chat Integration (Frontend Only)
+const API_KEY = "AIzaSyAfnJ9VleM4yx4aLyCgxyXqfpngYKkdUeM";
+
 const chatForm = document.getElementById("chatForm");
 const chatBox = document.getElementById("chatBox");
 const userInput = document.getElementById("userInput");
 
-if (chatForm && chatBox && userInput) {
-  chatForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const userText = userInput.value.trim();
-    if (!userText) return;
+chatForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    appendMessage("user", userText);
-    userInput.value = "";
-    appendMessage("ai", "Thinking...", true); // Loading message
+  const userText = userInput.value.trim();
+  if (!userText) return;
 
-    try {
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
+  appendMessage("user", userText);
+  userInput.value = "";
+  appendMessage("ai", "Thinking...", true);
+
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${API_KEY}`,
+      {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: userText }] }]
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: userText }]
+            }
+          ]
         })
-      });
+      }
+    );
 
-      const data = await res.json();
-      const response = data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I didn't get that.";
-      removeLoading();
-      appendMessage("ai", response);
-    } catch (err) {
-      removeLoading();
-      appendMessage("ai", "❌ Oops! Something went wrong.");
-      console.error(err);
-    }
-  });
+    const data = await res.json();
+    console.log("Gemini raw response:", data);
 
-  function appendMessage(role, text, isLoading = false) {
-    const msg = document.createElement("div");
-    msg.className = `chat-message ${role}`;
-    msg.textContent = (role === "ai" ? "👾 " : "🙋‍♂️ ") + text;
-    if (isLoading) msg.classList.add("loading");
-    chatBox.appendChild(msg);
-    chatBox.scrollTop = chatBox.scrollHeight;
+    removeLoading();
+
+    const reply =
+      data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "❌ No response from Gemini.";
+
+    appendMessage("ai", reply);
+
+  } catch (error) {
+    removeLoading();
+    appendMessage("ai", "❌ Request failed. Check console.");
+    console.error("Fetch error:", error);
+  }
+});
+
+// UI helpers
+function appendMessage(role, text, isLoading = false) {
+  const msg = document.createElement("div");
+  msg.className = `chat-message ${role}`;
+
+  if (role === "ai") {
+    msg.innerHTML = text
+      .replace(/### (.*?)(\n|$)/g, "<h4>$1</h4>")
+      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+      .split("\n\n")
+      .map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`)
+      .join("");
+  } else {
+    msg.textContent = text;
   }
 
-  function removeLoading() {
-    const loadingEl = chatBox.querySelector(".loading");
-    if (loadingEl) loadingEl.remove();
-  }
+
+  if (isLoading) msg.classList.add("loading");
+  chatBox.appendChild(msg);
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
 
+function removeLoading() {
+  const loading = chatBox.querySelector(".loading");
+  if (loading) loading.remove();
+}
 
 // scroll.js
 document.addEventListener("DOMContentLoaded", () => {
